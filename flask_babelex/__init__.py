@@ -531,7 +531,10 @@ class Domain(object):
             gettext(u'Hello %(name)s!', name='World')
         """
         t = self.get_translations()
-        return t.ugettext(string) % variables
+        if len(variables):
+            return t.ugettext(string) % variables
+        else:
+            return t.ugettext(string)
 
     def ngettext(self, singular, plural, num, **variables):
         """Translates a string with the current locale and passes in the
@@ -547,7 +550,10 @@ class Domain(object):
         """
         variables.setdefault('num', num)
         t = self.get_translations()
-        return t.ungettext(singular, plural, num) % variables
+        if len(variables):
+            return t.ungettext(singular, plural, num) % variables
+        else:
+            return t.ungettext(singular, plural, num)
 
     def pgettext(self, context, string, **variables):
         """Like :func:`gettext` but with a context.
@@ -555,7 +561,10 @@ class Domain(object):
         .. versionadded:: 0.7
         """
         t = self.get_translations()
-        return t.upgettext(context, string) % variables
+        if len(variables):
+            return t.upgettext(context, string) % variables
+        else:
+            return t.upgettext(context, string)
 
     def npgettext(self, context, singular, plural, num, **variables):
         """Like :func:`ngettext` but with a context.
@@ -564,11 +573,14 @@ class Domain(object):
         """
         variables.setdefault('num', num)
         t = self.get_translations()
-        return t.unpgettext(context, singular, plural, num) % variables
+        if len(variables):
+            return t.unpgettext(context, singular, plural, num) % variables
+        else:
+            return t.unpgettext(context, singular, plural, num)
 
     def lazy_gettext(self, string, **variables):
         """Like :func:`gettext` but the string returned is lazy which means
-        it will be translated when it is used as an actual string.
+        it will be translated when it is -used as an actual string.
 
         Example::
 
